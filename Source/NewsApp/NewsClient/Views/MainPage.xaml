@@ -24,7 +24,17 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <!--  TODO: change properties for narrow view  -->
-                        <Setter Target="ItemsListView.Visibility" Value="Visible" />
+                        <Setter Target="ItemsGridView.ItemContainerStyle">
+                            <Setter.Value>
+                                <Style TargetType="GridViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                    <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                                    <Setter Property="Background" Value="Gainsboro" />
+                                    <Setter Property="Height" Value="150" />
+                                    <Setter Property="Width" Value="500" />
+                                </Style>
+                            </Setter.Value>
+                        </Setter>
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="VisualStateNormal">
@@ -33,7 +43,17 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <!--  TODO: change properties for normal view  -->
-                        <Setter Target="ItemsGridView.Visibility" Value="Visible" />
+                        <Setter Target="ItemsGridView.ItemContainerStyle">
+                            <Setter.Value>
+                                <Style TargetType="GridViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                    <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                                    <Setter Property="Background" Value="Gainsboro" />
+                                    <Setter Property="Height" Value="200" />
+                                    <Setter Property="Width" Value="200" />
+                                </Style>
+                            </Setter.Value>
+                        </Setter>
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="VisualStateWide">
@@ -42,7 +62,17 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <!--  TODO: change properties for wide view  -->
-                        <Setter Target="ItemsGridView.Visibility" Value="Visible" />
+                        <Setter Target="ItemsGridView.ItemContainerStyle">
+                            <Setter.Value>
+                                <Style TargetType="GridViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                    <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                                    <Setter Property="Background" Value="Gainsboro" />
+                                    <Setter Property="Height" Value="250" />
+                                    <Setter Property="Width" Value="300" />
+                                </Style>
+                            </Setter.Value>
+                        </Setter>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -61,92 +91,40 @@
             </controls:PageHeader.SecondaryCommands>
         </controls:PageHeader>
 
-        <controls:Resizer x:Name="parameterResizer" Margin="16,16,16,0">
+        <TextBox x:Name="filterTextBox" MinWidth="250"
+                 MinHeight="62" Margin="16,16,16,0"
+                 Header="Filter articles"
+                 Text="{Binding FilterString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <!--  place below page header  -->
             <RelativePanel.Below>pageHeader</RelativePanel.Below>
             <RelativePanel.AlignLeftWithPanel>True</RelativePanel.AlignLeftWithPanel>
-            <TextBox MinWidth="250" MinHeight="62"
-                     Header="Filter articles"
-                     Text="{Binding FilterString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                <Interactivity:Interaction.Behaviors>
-                    <!--  enable submit on enter key  -->
-                    <Behaviors:KeyBehavior Key="Enter">
-                        <Core:CallMethodAction MethodName="Filter" TargetObject="{Binding}" />
-                    </Behaviors:KeyBehavior>
-                    <!--  focus on textbox when page loads  -->
-                    <Core:EventTriggerBehavior>
-                        <Behaviors:FocusAction />
-                    </Core:EventTriggerBehavior>
-                </Interactivity:Interaction.Behaviors>
-            </TextBox>
-        </controls:Resizer>
+            <Interactivity:Interaction.Behaviors>
+                <!--  enable submit on enter key  -->
+                <Core:EventTriggerBehavior EventName="TextChanged">
+                    <Core:CallMethodAction MethodName="Filter" TargetObject="{Binding}" />
+                </Core:EventTriggerBehavior>
+                <Behaviors:KeyBehavior Key="Enter">
+                    <Core:CallMethodAction MethodName="Filter" TargetObject="{Binding}" />
+                </Behaviors:KeyBehavior>
+                <!--  focus on textbox when page loads  -->
+                <Core:EventTriggerBehavior>
+                    <Behaviors:FocusAction />
+                </Core:EventTriggerBehavior>
+            </Interactivity:Interaction.Behaviors>
+        </TextBox>
 
-        <Button x:Name="submitButton" Click="{x:Bind ViewModel.Filter}" Content="Apply">
-            <!--  place next to textbox  -->
-            <RelativePanel.RightOf>parameterResizer</RelativePanel.RightOf>
-            <RelativePanel.AlignBottomWith>parameterResizer</RelativePanel.AlignBottomWith>
-        </Button>
-
-        <GridView x:Name="ItemsGridView" ItemsSource="{Binding Items}"
-                  Padding="16,24,16,16"
-                  ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                  ScrollViewer.HorizontalScrollMode="Disabled"
-                  ScrollViewer.VerticalScrollBarVisibility="Auto"
-                  ScrollViewer.VerticalScrollMode="Enabled"
+        <GridView x:Name="ItemsGridView"
+                  ItemTemplate="{StaticResource ArticleListItemTemplate}"
+                  ItemsSource="{Binding Items}" Padding="16,24,16,16"
                   SelectedItem="{Binding Item, Mode=TwoWay}"
-                  SelectionMode="Single" Visibility="Collapsed">
+                  SelectionMode="Single">
             <!--  place under to filter textbox  -->
-            <RelativePanel.Below>parameterResizer</RelativePanel.Below>
-            <RelativePanel.AlignLeftWith>parameterResizer</RelativePanel.AlignLeftWith>
+            <RelativePanel.Below>filterTextBox</RelativePanel.Below>
+            <RelativePanel.AlignLeftWith>filterTextBox</RelativePanel.AlignLeftWith>
             <RelativePanel.AlignRightWithPanel>True</RelativePanel.AlignRightWithPanel>
             <RelativePanel.AlignBottomWithPanel>True</RelativePanel.AlignBottomWithPanel>
-            <GridView.ItemContainerStyle>
-                <Style TargetType="GridViewItem">
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                    <Setter Property="VerticalContentAlignment" Value="Stretch" />
-                    <Setter Property="Height" Value="200" />
-                    <Setter Property="Width" Value="250" />
-                </Style>
-            </GridView.ItemContainerStyle>
-            <GridView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <ItemsWrapGrid Orientation="Horizontal" />
-                </ItemsPanelTemplate>
-            </GridView.ItemsPanel>
-            <GridView.ItemTemplate>
-                <DataTemplate>
-                    <Grid Background="DimGray">
-                        <Image Source="{Binding Image}" />
-                        <StackPanel VerticalAlignment="Bottom" Padding="8">
-                            <TextBlock Text="{Binding Headline}" />
-                        </StackPanel>
-                    </Grid>
-                </DataTemplate>
-            </GridView.ItemTemplate>
         </GridView>
 
-        <ListView x:Name="ItemsListView" ItemsSource="{Binding Items}"
-                  Padding="16,24,16,16"
-                  SelectedItem="{Binding Item, Mode=TwoWay}"
-                  SelectionMode="Single" Visibility="Collapsed">
-            <!--  place under to filter textbox  -->
-            <RelativePanel.Below>parameterResizer</RelativePanel.Below>
-            <RelativePanel.AlignLeftWith>parameterResizer</RelativePanel.AlignLeftWith>
-            <RelativePanel.AlignRightWithPanel>True</RelativePanel.AlignRightWithPanel>
-            <RelativePanel.AlignBottomWithPanel>True</RelativePanel.AlignBottomWithPanel>
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                </Style>
-            </ListView.ItemContainerStyle>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <Grid Height="100" Background="False">
-                        <TextBlock Text="{Binding Headline}" />
-                    </Grid>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
     </RelativePanel>
 </Page>
 

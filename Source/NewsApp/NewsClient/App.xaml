@@ -4,7 +4,32 @@
                      xmlns:common="using:Template10.Common">
 
     <Application.Resources>
-        <ResourceDictionary Source="Styles\Custom.xaml" />
+
+        <ResourceDictionary>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles\Custom.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <DataTemplate x:Key="ArticleListItemTemplate">
+                <Grid>
+                    <Grid.Background>
+                        <ImageBrush AlignmentX="Center" AlignmentY="Top"
+                                    ImageSource="{Binding Image}" Stretch="UniformToFill" />
+                    </Grid.Background>
+                    <StackPanel VerticalAlignment="Bottom" Padding="8">
+                        <StackPanel.Background>
+                            <SolidColorBrush Opacity=".5" Color="{ThemeResource SystemAccentColor}" />
+                        </StackPanel.Background>
+                        <TextBlock Foreground="White" MaxLines="2"
+                                   Text="{Binding Headline}" TextTrimming="WordEllipsis"
+                                   TextWrapping="WrapWholeWords" />
+                    </StackPanel>
+                </Grid>
+            </DataTemplate>
+
+        </ResourceDictionary>
+
     </Application.Resources>
 
 </common:BootStrapper>

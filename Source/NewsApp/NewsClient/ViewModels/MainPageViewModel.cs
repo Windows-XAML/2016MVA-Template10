@@ -39,34 +39,23 @@ namespace NewsClient.ViewModels
             }
         }
 
-        #region properties
+        private List<NewsService.Article> _originalItems;
 
         public ObservableCollection<object> Items { get; set; } = new ObservableCollection<object>();
 
-        NewsService.Article _Item = default(NewsService.Article);
-        public NewsService.Article Item { get { return _Item; } set { Set(ref _Item, Item); } }
-
-        private List<NewsService.Article> _originalItems;
+        public NewsService.Article Item
+        {
+            get { return null; }
+            set
+            {
+                if (value != null)
+                    NavigationService.Navigate(typeof(Views.DetailPage), value.Headline);
+                RaisePropertyChanged();
+            }
+        }
 
         string _FilterString = string.Empty;
-        public string FilterString { get { return _FilterString; } set { Set(ref _FilterString, FilterString); } }
-
-        #endregion
-
-        #region methods
-
-        public void Filter()
-        {
-            var filter = _originalItems.Where(x => x.Headline.Contains(FilterString));
-            Items.AddRange(filter);
-        }
-
-        public void View()
-        {
-            NavigationService.Navigate(typeof(Views.DetailPage), Item?.Headline);
-        }
-
-        #endregion
+        public string FilterString { get { return _FilterString; } set { Set(ref _FilterString, value); } }
 
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
         {
@@ -89,14 +78,14 @@ namespace NewsClient.ViewModels
             return Task.CompletedTask;
         }
 
-        public override Task OnNavigatingFromAsync(NavigatingEventArgs args)
+        public void Filter()
         {
-            args.Cancel = false;
-            return Task.CompletedTask;
+            var filter = _originalItems.Where(x => x.Headline.ToLower().Contains(FilterString?.ToLower()));
+            Items.AddRange(filter, true);
         }
 
         public void GotoSettings() =>
-            NavigationService.Navigate(typeof(Views.SettingsPage), 0);
+          NavigationService.Navigate(typeof(Views.SettingsPage), 0);
 
         public void GotoPrivacy() =>
             NavigationService.Navigate(typeof(Views.SettingsPage), 1);
