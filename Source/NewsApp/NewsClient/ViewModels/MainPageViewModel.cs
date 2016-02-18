@@ -5,37 +5,83 @@ using System.Threading.Tasks;
 using Template10.Services.NavigationService;
 using Windows.UI.Xaml.Navigation;
 using System;
+using System.Collections.ObjectModel;
+using Template10.Utils;
 
 namespace NewsClient.ViewModels
 {
     public class MainPageViewModel : ViewModelBase
     {
+        NewsService.NewsService _NewsService;
+
         public MainPageViewModel()
         {
             if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
             {
-                Value = "Designtime value";
+                for (int i = 0; i < 10; i++)
+                {
+                    Items.Add(new NewsService.Article
+                    {
+                        Headline = "Article headline",
+                        Paragraphs = new[]
+                        {
+                            "The quick brown fox jumps over the lazy dog.",
+                            "Now is the time for all good men to come the aid of their country.",
+                        }.ToList()
+                    });
+                }
+            }
+            else
+            {
+                _NewsService = new NewsService.NewsService();
             }
         }
 
-        string _Value = string.Empty;
-        public string Value { get { return _Value; } set { Set(ref _Value, value); } }
+        #region properties
 
-        public override Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
+        public ObservableCollection<object> Items { get; set; } = new ObservableCollection<object>();
+
+        NewsService.Article _Item = default(NewsService.Article);
+        public NewsService.Article Item { get { return _Item; } set { Set(ref _Item, Item); } }
+
+        private List<NewsService.Article> _originalItems;
+
+        string _FilterString = string.Empty;
+        public string FilterString { get { return _FilterString; } set { Set(ref _FilterString, FilterString); } }
+
+        #endregion
+
+        #region methods
+
+        public void Filter()
+        {
+            var filter = _originalItems.Where(x => x.Headline.Contains(FilterString));
+            Items.AddRange(filter);
+        }
+
+        public void View()
+        {
+            NavigationService.Navigate(typeof(Views.DetailPage), Item?.Headline);
+        }
+
+        #endregion
+
+        public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
         {
             if (state.Any())
             {
-                Value = state[nameof(Value)]?.ToString();
+                FilterString = state[nameof(FilterString)]?.ToString();
                 state.Clear();
             }
-            return Task.CompletedTask;
+            _originalItems = await _NewsService.GetArticlesAsync();
+            Filter();
         }
 
         public override Task OnNavigatedFromAsync(IDictionary<string, object> state, bool suspending)
         {
             if (suspending)
             {
-                state[nameof(Value)] = Value;
+                state[nameof(FilterString)] = FilterString;
             }
             return Task.CompletedTask;
         }
@@ -45,9 +91,6 @@ namespace NewsClient.ViewModels
             args.Cancel = false;
             return Task.CompletedTask;
         }
-
-        public void GotoDetailsPage() =>
-            NavigationService.Navigate(typeof(Views.DetailPage), Value);
 
         public void GotoSettings() =>
             NavigationService.Navigate(typeof(Views.SettingsPage), 0);

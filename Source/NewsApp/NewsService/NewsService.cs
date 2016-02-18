@@ -9,12 +9,12 @@ namespace NewsService
     {
         private static readonly Random NewsRandom = new Random();
 
-        public async Task<List<Article>> GetArticles()
+        public async Task<List<Article>> GetArticlesAsync()
         {
-            return await GetArticles(10);
+            return await GetArticlesAsync(10);
         }
 
-        public async Task<List<Article>> GetArticles(int numberOfArticle)
+        public async Task<List<Article>> GetArticlesAsync(int numberOfArticle)
         {
             // async to simulate a web service call
             var result = await Task.Run(() =>
@@ -37,11 +37,12 @@ namespace NewsService
             {
                 paras.Add(ArticleText.GetParagraph());
             }
+            var image = $"ms-appx:///NewsService/Images/PreviewImage{NewsRandom.Next(1, 21):D2}.png";
             return new Article
             {
                 Headline = ArticleText.GetHeader(),
                 Paragraphs = paras,
-                Image = new BitmapImage(new Uri($"ms-appx:///NewsService/Images/PreviewImage{NewsRandom.Next(1, 21):D2}.png"))
+                Image = image,
             };
         }
     }

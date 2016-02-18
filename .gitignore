@@ -195,4 +195,5 @@ Templates (Project)/Blank/null
 /packages/Microsoft.VSSDK.BuildTools.14.1.24720
 
 *.zip
+Source/NewsApp/.vs/NewsApp/v14/.suo
 *.tss
