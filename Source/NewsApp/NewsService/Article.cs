@@ -17,6 +17,6 @@ namespace NewsService
 
         public List<string> RemainingParagraphs => Paragraphs.GetRange(1, Paragraphs.Count - 1);
 
-        public BitmapImage Image { get; set; }
+        public string Image { get; set; }
     }
 }

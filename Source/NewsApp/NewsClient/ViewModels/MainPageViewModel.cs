@@ -6,11 +6,14 @@ using Template10.Services.NavigationService;
 using Windows.UI.Xaml.Navigation;
 using System;
 using System.Collections.ObjectModel;
+using Template10.Utils;
 
 namespace NewsClient.ViewModels
 {
     public class MainPageViewModel : ViewModelBase
     {
+        NewsService.NewsService _NewsService;
+
         public MainPageViewModel()
         {
             if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
@@ -28,14 +31,20 @@ namespace NewsClient.ViewModels
                     });
                 }
             }
+            else
+            {
+                _NewsService = new NewsService.NewsService();
+            }
         }
 
         #region properties
 
         public ObservableCollection<object> Items { get; set; } = new ObservableCollection<object>();
 
-        string _Item = string.Empty;
-        public string Item { get { return _Item; } set { Set(ref _Item, Item); } }
+        NewsService.Article _Item = default(NewsService.Article);
+        public NewsService.Article Item { get { return _Item; } set { Set(ref _Item, Item); } }
+
+        private List<NewsService.Article> _originalItems;
 
         string _FilterString = string.Empty;
         public string FilterString { get { return _FilterString; } set { Set(ref _FilterString, FilterString); } }
@@ -44,13 +53,20 @@ namespace NewsClient.ViewModels
 
         #region methods
 
-        public void Filter() { }
+        public void Filter()
+        {
+            var filter = _originalItems.Where(x => x.Headline.Contains(FilterString));
+            Items.AddRange(filter);
+        }
 
-        public void View() { }
+        public void View()
+        {
+            NavigationService.Navigate(typeof(Views.DetailPage), Item?.Headline);
+        }
 
         #endregion
 
-        public override Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
+        public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
         {
             if (state.Any())
             {
@@ -58,7 +74,8 @@ namespace NewsClient.ViewModels
                 Filter();
                 state.Clear();
             }
-            return Task.CompletedTask;
+            _originalItems = await _NewsService.GetArticlesAsync();
+            Filter();
         }
 
         public override Task OnNavigatedFromAsync(IDictionary<string, object> state, bool suspending)
