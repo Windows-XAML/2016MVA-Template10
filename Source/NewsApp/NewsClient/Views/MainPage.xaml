@@ -24,6 +24,7 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <!--  TODO: change properties for narrow view  -->
+                        <Setter Target="ItemsListView.Visibility" Value="Visible" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="VisualStateNormal">
@@ -32,6 +33,7 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <!--  TODO: change properties for normal view  -->
+                        <Setter Target="ItemsGridView.Visibility" Value="Visible" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="VisualStateWide">
@@ -40,6 +42,7 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <!--  TODO: change properties for wide view  -->
+                        <Setter Target="ItemsGridView.Visibility" Value="Visible" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -64,11 +67,11 @@
             <RelativePanel.AlignLeftWithPanel>True</RelativePanel.AlignLeftWithPanel>
             <TextBox MinWidth="250" MinHeight="62"
                      Header="Filter articles"
-                     Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                     Text="{Binding FilterString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <Interactivity:Interaction.Behaviors>
                     <!--  enable submit on enter key  -->
                     <Behaviors:KeyBehavior Key="Enter">
-                        <Core:CallMethodAction MethodName="FilterList" TargetObject="{Binding}" />
+                        <Core:CallMethodAction MethodName="Filter" TargetObject="{Binding}" />
                     </Behaviors:KeyBehavior>
                     <!--  focus on textbox when page loads  -->
                     <Core:EventTriggerBehavior>
@@ -78,28 +81,72 @@
             </TextBox>
         </controls:Resizer>
 
-        <Button x:Name="submitButton" Click="{x:Bind ViewModel.FilterList}" Content="Filter">
+        <Button x:Name="submitButton" Click="{x:Bind ViewModel.Filter}" Content="Apply">
             <!--  place next to textbox  -->
             <RelativePanel.RightOf>parameterResizer</RelativePanel.RightOf>
             <RelativePanel.AlignBottomWith>parameterResizer</RelativePanel.AlignBottomWith>
         </Button>
 
         <GridView x:Name="ItemsGridView" ItemsSource="{Binding Items}"
+                  Padding="16,24,16,16"
+                  ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                  ScrollViewer.HorizontalScrollMode="Disabled"
+                  ScrollViewer.VerticalScrollBarVisibility="Auto"
+                  ScrollViewer.VerticalScrollMode="Enabled"
                   SelectedItem="{Binding Item, Mode=TwoWay}"
-                  SelectionMode="Single">
+                  SelectionMode="Single" Visibility="Collapsed">
             <!--  place under to filter textbox  -->
             <RelativePanel.Below>parameterResizer</RelativePanel.Below>
             <RelativePanel.AlignLeftWith>parameterResizer</RelativePanel.AlignLeftWith>
+            <RelativePanel.AlignRightWithPanel>True</RelativePanel.AlignRightWithPanel>
+            <RelativePanel.AlignBottomWithPanel>True</RelativePanel.AlignBottomWithPanel>
+            <GridView.ItemContainerStyle>
+                <Style TargetType="GridViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                    <Setter Property="Height" Value="200" />
+                    <Setter Property="Width" Value="250" />
+                </Style>
+            </GridView.ItemContainerStyle>
+            <GridView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsWrapGrid Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </GridView.ItemsPanel>
+            <GridView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Background="DimGray">
+                        <Image Source="{Binding Image}" />
+                        <StackPanel VerticalAlignment="Bottom" Padding="8">
+                            <TextBlock Text="{Binding Headline}" />
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </GridView.ItemTemplate>
         </GridView>
 
         <ListView x:Name="ItemsListView" ItemsSource="{Binding Items}"
+                  Padding="16,24,16,16"
                   SelectedItem="{Binding Item, Mode=TwoWay}"
-                  SelectionMode="Single">
+                  SelectionMode="Single" Visibility="Collapsed">
             <!--  place under to filter textbox  -->
             <RelativePanel.Below>parameterResizer</RelativePanel.Below>
             <RelativePanel.AlignLeftWith>parameterResizer</RelativePanel.AlignLeftWith>
+            <RelativePanel.AlignRightWithPanel>True</RelativePanel.AlignRightWithPanel>
+            <RelativePanel.AlignBottomWithPanel>True</RelativePanel.AlignBottomWithPanel>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Height="100" Background="False">
+                        <TextBlock Text="{Binding Headline}" />
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
         </ListView>
-
     </RelativePanel>
 </Page>
 

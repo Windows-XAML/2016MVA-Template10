@@ -15,7 +15,18 @@ namespace NewsClient.ViewModels
         {
             if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
             {
-                Items = new ObservableCollection<object>(new[] { "1", "2", "3" });
+                for (int i = 0; i < 10; i++)
+                {
+                    Items.Add(new NewsService.Article
+                    {
+                        Headline = "Article headline",
+                        Paragraphs = new[]
+                        {
+                            "The quick brown fox jumps over the lazy dog.",
+                            "Now is the time for all good men to come the aid of their country.",
+                        }.ToList()
+                    });
+                }
             }
         }
 
@@ -54,7 +65,7 @@ namespace NewsClient.ViewModels
         {
             if (suspending)
             {
-                state[nameof(Item)] = Item;
+                state[nameof(FilterString)] = FilterString;
             }
             return Task.CompletedTask;
         }
@@ -64,9 +75,6 @@ namespace NewsClient.ViewModels
             args.Cancel = false;
             return Task.CompletedTask;
         }
-
-        public void GotoDetailsPage() =>
-            NavigationService.Navigate(typeof(Views.DetailPage), Item);
 
         public void GotoSettings() =>
             NavigationService.Navigate(typeof(Views.SettingsPage), 0);
