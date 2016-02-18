@@ -123,11 +123,6 @@
             <RelativePanel.AlignLeftWith>filterTextBox</RelativePanel.AlignLeftWith>
             <RelativePanel.AlignRightWithPanel>True</RelativePanel.AlignRightWithPanel>
             <RelativePanel.AlignBottomWithPanel>True</RelativePanel.AlignBottomWithPanel>
-            <GridView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <ItemsWrapGrid Orientation="Horizontal" />
-                </ItemsPanelTemplate>
-            </GridView.ItemsPanel>
         </GridView>
 
     </RelativePanel>
