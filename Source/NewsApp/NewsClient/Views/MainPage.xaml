@@ -24,7 +24,6 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <!--  TODO: change properties for narrow view  -->
-                        <Setter Target="stateTextBox.Text" Value="Narrow Visual State" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="VisualStateNormal">
@@ -33,7 +32,6 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <!--  TODO: change properties for normal view  -->
-                        <Setter Target="stateTextBox.Text" Value="Normal Visual State" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="VisualStateWide">
@@ -42,13 +40,12 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <!--  TODO: change properties for wide view  -->
-                        <Setter Target="stateTextBox.Text" Value="Wide Visual State" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
-        <controls:PageHeader x:Name="pageHeader" Text="Main Page">
+        <controls:PageHeader x:Name="pageHeader" Text="Template 10 News App">
             <!--  place stretched, across top  -->
             <RelativePanel.AlignTopWithPanel>True</RelativePanel.AlignTopWithPanel>
             <RelativePanel.AlignRightWithPanel>True</RelativePanel.AlignRightWithPanel>
@@ -66,12 +63,12 @@
             <RelativePanel.Below>pageHeader</RelativePanel.Below>
             <RelativePanel.AlignLeftWithPanel>True</RelativePanel.AlignLeftWithPanel>
             <TextBox MinWidth="250" MinHeight="62"
-                     Header="Parameter to pass"
+                     Header="Filter articles"
                      Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <Interactivity:Interaction.Behaviors>
                     <!--  enable submit on enter key  -->
                     <Behaviors:KeyBehavior Key="Enter">
-                        <Core:CallMethodAction MethodName="GotoDetailsPage" TargetObject="{Binding}" />
+                        <Core:CallMethodAction MethodName="FilterList" TargetObject="{Binding}" />
                     </Behaviors:KeyBehavior>
                     <!--  focus on textbox when page loads  -->
                     <Core:EventTriggerBehavior>
@@ -81,17 +78,27 @@
             </TextBox>
         </controls:Resizer>
 
-        <Button x:Name="submitButton" Click="{x:Bind ViewModel.GotoDetailsPage}" Content="Submit">
+        <Button x:Name="submitButton" Click="{x:Bind ViewModel.FilterList}" Content="Filter">
             <!--  place next to textbox  -->
             <RelativePanel.RightOf>parameterResizer</RelativePanel.RightOf>
             <RelativePanel.AlignBottomWith>parameterResizer</RelativePanel.AlignBottomWith>
         </Button>
 
-        <TextBlock x:Name="stateTextBox" Margin="16,16,0,0" Text="Current Visual State">
-            <!--  place under to textbox  -->
+        <GridView x:Name="ItemsGridView" ItemsSource="{Binding Items}"
+                  SelectedItem="{Binding Item, Mode=TwoWay}"
+                  SelectionMode="Single">
+            <!--  place under to filter textbox  -->
             <RelativePanel.Below>parameterResizer</RelativePanel.Below>
             <RelativePanel.AlignLeftWith>parameterResizer</RelativePanel.AlignLeftWith>
-        </TextBlock>
+        </GridView>
+
+        <ListView x:Name="ItemsListView" ItemsSource="{Binding Items}"
+                  SelectedItem="{Binding Item, Mode=TwoWay}"
+                  SelectionMode="Single">
+            <!--  place under to filter textbox  -->
+            <RelativePanel.Below>parameterResizer</RelativePanel.Below>
+            <RelativePanel.AlignLeftWith>parameterResizer</RelativePanel.AlignLeftWith>
+        </ListView>
 
     </RelativePanel>
 </Page>

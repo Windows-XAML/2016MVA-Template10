@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Template10.Services.NavigationService;
 using Windows.UI.Xaml.Navigation;
 using System;
+using System.Collections.ObjectModel;
 
 namespace NewsClient.ViewModels
 {
@@ -14,18 +15,36 @@ namespace NewsClient.ViewModels
         {
             if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
             {
-                Value = "Designtime value";
+                Items = new ObservableCollection<object>(new[] { "1", "2", "3" });
             }
         }
 
-        string _Value = string.Empty;
-        public string Value { get { return _Value; } set { Set(ref _Value, value); } }
+        #region properties
+
+        public ObservableCollection<object> Items { get; set; } = new ObservableCollection<object>();
+
+        string _Item = string.Empty;
+        public string Item { get { return _Item; } set { Set(ref _Item, Item); } }
+
+        string _FilterString = string.Empty;
+        public string FilterString { get { return _FilterString; } set { Set(ref _FilterString, FilterString); } }
+
+        #endregion
+
+        #region methods
+
+        public void Filter() { }
+
+        public void View() { }
+
+        #endregion
 
         public override Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
         {
             if (state.Any())
             {
-                Value = state[nameof(Value)]?.ToString();
+                FilterString = state[nameof(FilterString)]?.ToString();
+                Filter();
                 state.Clear();
             }
             return Task.CompletedTask;
@@ -35,7 +54,7 @@ namespace NewsClient.ViewModels
         {
             if (suspending)
             {
-                state[nameof(Value)] = Value;
+                state[nameof(Item)] = Item;
             }
             return Task.CompletedTask;
         }
@@ -47,7 +66,7 @@ namespace NewsClient.ViewModels
         }
 
         public void GotoDetailsPage() =>
-            NavigationService.Navigate(typeof(Views.DetailPage), Value);
+            NavigationService.Navigate(typeof(Views.DetailPage), Item);
 
         public void GotoSettings() =>
             NavigationService.Navigate(typeof(Views.SettingsPage), 0);
