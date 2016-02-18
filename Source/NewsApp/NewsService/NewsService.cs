@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Windows.Storage;
 using Windows.UI.Xaml.Media.Imaging;
+using Newtonsoft.Json;
 
 namespace NewsService
 {
@@ -11,7 +14,8 @@ namespace NewsService
 
         public async Task<List<Article>> GetArticlesAsync()
         {
-            return await GetArticlesAsync(10);
+            var result = await GetArticlesAsync(20);
+            return new List<Article>(result);
         }
 
         public async Task<List<Article>> GetArticlesAsync(int numberOfArticle)
@@ -22,13 +26,25 @@ namespace NewsService
                 var articles = new List<Article>();
                 for (var i = 0; i < numberOfArticle; i++)
                 {
-                    articles.Add(ArticleGenerator());
+                    var article = ArticleGenerator();
+                    article.Id = i;
+                    articles.Add(article);
                 }
                 return articles;
             });
 
             return result;
         }
+
+        public async Task<List<Article>> GetCachedArticlesAsync()
+        {
+            // async to simulate a web service call
+            var data = await CachedArticlesAsync();
+            var result = await Task.Run(() => JsonConvert.DeserializeObject<List<Article>>(data));
+
+            return result;
+        }
+
 
         private static Article ArticleGenerator()
         {
@@ -44,6 +60,12 @@ namespace NewsService
                 Paragraphs = paras,
                 Image = image,
             };
+        }
+
+        private static async Task<string> CachedArticlesAsync()
+        {
+            var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///NewsService/Data/Data.json"));
+            return await FileIO.ReadTextAsync(file);
         }
     }
 }

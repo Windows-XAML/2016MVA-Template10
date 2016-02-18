@@ -9,6 +9,8 @@ namespace NewsService
 {
     public class Article
     {
+        public int Id { get; set; }
+
         public string Headline { get; set; }
 
         public List<string> Paragraphs { get; set; }

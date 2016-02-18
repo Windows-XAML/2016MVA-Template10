@@ -6,6 +6,8 @@ using Template10.Services.NavigationService;
 using Windows.UI.Xaml.Navigation;
 using System;
 using System.Collections.ObjectModel;
+using Windows.Storage;
+using Newtonsoft.Json;
 using Template10.Utils;
 
 namespace NewsClient.ViewModels
@@ -73,7 +75,8 @@ namespace NewsClient.ViewModels
                 FilterString = state[nameof(FilterString)]?.ToString();
                 state.Clear();
             }
-            _originalItems = await _NewsService.GetArticlesAsync();
+            _originalItems = await _NewsService.GetCachedArticlesAsync();
+
             Filter();
         }
 
