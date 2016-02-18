@@ -71,7 +71,6 @@ namespace NewsClient.ViewModels
             if (state.Any())
             {
                 FilterString = state[nameof(FilterString)]?.ToString();
-                Filter();
                 state.Clear();
             }
             _originalItems = await _NewsService.GetArticlesAsync();
