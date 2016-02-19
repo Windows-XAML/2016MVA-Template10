@@ -7,6 +7,7 @@ using Windows.UI.Xaml.Navigation;
 using System;
 using System.Collections.ObjectModel;
 using Windows.Storage;
+using NewsService;
 using Newtonsoft.Json;
 using Template10.Utils;
 
@@ -49,7 +50,7 @@ namespace NewsClient.ViewModels
             set
             {
                 if (value != null)
-                    NavigationService.Navigate(typeof(Views.DetailPage), value.Headline);
+                    NavigationService.Navigate(typeof(Views.ArticlePage), value.Id);
                 RaisePropertyChanged();
             }
         }
@@ -64,7 +65,15 @@ namespace NewsClient.ViewModels
                 FilterString = state[nameof(FilterString)]?.ToString();
                 state.Clear();
             }
-            _originalItems = await _NewsService.GetCachedArticlesAsync();
+            if (SessionState.ContainsKey(nameof(NewsService.NewsService)))
+            {
+                _originalItems = SessionState.Get<List<Article>>(nameof(NewsService.NewsService));
+            }
+            else
+            {
+                _originalItems = await _NewsService.GetCachedArticlesAsync();
+                SessionState.Add(nameof(NewsService.NewsService), _originalItems);
+            }
 
             Filter();
         }

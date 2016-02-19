@@ -4,9 +4,9 @@ using Windows.UI.Xaml.Controls;
 
 namespace NewsClient.Views
 {
-    public sealed partial class DetailPage : Page
+    public sealed partial class ArticlePage : Page
     {
-        public DetailPage()
+        public ArticlePage()
         {
             InitializeComponent();
             NavigationCacheMode = NavigationCacheMode.Disabled;
