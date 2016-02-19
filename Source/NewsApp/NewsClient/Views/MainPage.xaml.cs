@@ -17,4 +17,5 @@ namespace NewsClient.Views
             NavigationCacheMode = NavigationCacheMode.Enabled;
         }
     }
+
 }

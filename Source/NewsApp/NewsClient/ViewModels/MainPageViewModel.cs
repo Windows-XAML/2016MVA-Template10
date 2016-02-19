@@ -58,13 +58,15 @@ namespace NewsClient.ViewModels
         string _FilterString = string.Empty;
         public string FilterString { get { return _FilterString; } set { Set(ref _FilterString, value); } }
 
-        public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
+        public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> suspensionState)
         {
-            if (state.Any())
+            // restore filter string, if any
+            if (suspensionState.ContainsKey(nameof(FilterString)))
             {
-                FilterString = state[nameof(FilterString)]?.ToString();
-                state.Clear();
+                FilterString = suspensionState[nameof(FilterString)]?.ToString();
             }
+
+            // load articles
             if (SessionState.ContainsKey(nameof(NewsService.NewsService)))
             {
                 _originalItems = SessionState.Get<List<Article>>(nameof(NewsService.NewsService));
@@ -75,14 +77,15 @@ namespace NewsClient.ViewModels
                 SessionState.Add(nameof(NewsService.NewsService), _originalItems);
             }
 
+            // apply initial filter
             Filter();
         }
 
-        public override Task OnNavigatedFromAsync(IDictionary<string, object> state, bool suspending)
+        public override Task OnNavigatedFromAsync(IDictionary<string, object> suspensionState, bool suspending)
         {
             if (suspending)
             {
-                state[nameof(FilterString)] = FilterString;
+                suspensionState[nameof(FilterString)] = FilterString;
             }
             return Task.CompletedTask;
         }

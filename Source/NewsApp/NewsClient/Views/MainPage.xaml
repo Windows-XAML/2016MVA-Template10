@@ -23,7 +23,6 @@
                         <AdaptiveTrigger MinWindowWidth="{StaticResource NarrowMinWidth}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <!--  TODO: change properties for narrow view  -->
                         <Setter Target="ItemsGridView.ItemContainerStyle">
                             <Setter.Value>
                                 <Style TargetType="GridViewItem">
@@ -31,8 +30,14 @@
                                     <Setter Property="VerticalContentAlignment" Value="Stretch" />
                                     <Setter Property="Background" Value="Gainsboro" />
                                     <Setter Property="Height" Value="150" />
-                                    <Setter Property="Width" Value="500" />
                                 </Style>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Target="ItemsGridView.ItemsPanel">
+                            <Setter.Value>
+                                <ItemsPanelTemplate>
+                                    <StackPanel />
+                                </ItemsPanelTemplate>
                             </Setter.Value>
                         </Setter>
                     </VisualState.Setters>
@@ -42,7 +47,6 @@
                         <AdaptiveTrigger MinWindowWidth="{StaticResource NormalMinWidth}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <!--  TODO: change properties for normal view  -->
                         <Setter Target="ItemsGridView.ItemContainerStyle">
                             <Setter.Value>
                                 <Style TargetType="GridViewItem">
@@ -61,7 +65,6 @@
                         <AdaptiveTrigger MinWindowWidth="{StaticResource WideMinWidth}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <!--  TODO: change properties for wide view  -->
                         <Setter Target="ItemsGridView.ItemContainerStyle">
                             <Setter.Value>
                                 <Style TargetType="GridViewItem">
@@ -114,11 +117,13 @@
                   ItemsSource="{Binding Items}" Padding="16,24,16,16"
                   SelectedItem="{Binding Item, Mode=TwoWay}"
                   SelectionMode="Single">
+
             <!--  place under to filter textbox  -->
             <RelativePanel.Below>filterTextBox</RelativePanel.Below>
             <RelativePanel.AlignLeftWith>filterTextBox</RelativePanel.AlignLeftWith>
             <RelativePanel.AlignRightWithPanel>True</RelativePanel.AlignRightWithPanel>
             <RelativePanel.AlignBottomWithPanel>True</RelativePanel.AlignBottomWithPanel>
+
         </GridView>
 
     </RelativePanel>

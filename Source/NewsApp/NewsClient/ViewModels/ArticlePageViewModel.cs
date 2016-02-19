@@ -35,7 +35,7 @@ namespace NewsClient.ViewModels
         private Article _article;
         public Article Article { get { return _article; } set { Set(ref _article, value); } }
 
-        public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
+        public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> suspensionState)
         {
             if (parameter == null)
             {
