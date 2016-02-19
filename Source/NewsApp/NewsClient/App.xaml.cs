@@ -1,3 +1,4 @@
+using System;
 using Windows.UI.Xaml;
 using System.Threading.Tasks;
 using NewsClient.Services.SettingsServices;
@@ -29,8 +30,15 @@ namespace NewsClient
         }
 
         // runs even if restored from state
-        public override Task OnInitializeAsync(IActivatedEventArgs args)
+        public override async Task OnInitializeAsync(IActivatedEventArgs args)
         {
+            // hide phone statusbar
+            if (Windows.Foundation.Metadata.ApiInformation
+                .IsTypePresent("Windows.UI.ViewManagement.StatusBar"))
+            {
+                await Windows.UI.ViewManagement.StatusBar.GetForCurrentView().HideAsync();
+            }
+
             // content may already be shell when resuming
             if ((Window.Current.Content as ModalDialog) == null)
             {
@@ -43,7 +51,6 @@ namespace NewsClient
                     ModalContent = new Views.Busy(),
                 };
             }
-            return Task.CompletedTask;
         }
 
         // runs only when not restored from state

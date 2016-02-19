@@ -106,10 +106,6 @@
                 <Behaviors:KeyBehavior Key="Enter">
                     <Core:CallMethodAction MethodName="Filter" TargetObject="{Binding}" />
                 </Behaviors:KeyBehavior>
-                <!--  focus on textbox when page loads  -->
-                <Core:EventTriggerBehavior>
-                    <Behaviors:FocusAction />
-                </Core:EventTriggerBehavior>
             </Interactivity:Interaction.Behaviors>
         </TextBox>
 
