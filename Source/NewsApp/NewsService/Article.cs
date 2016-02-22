@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,8 +16,10 @@ namespace NewsService
 
         public List<string> Paragraphs { get; set; }
 
+        [JsonIgnore]
         public string FirstParagraph => Paragraphs[0];
 
+        [JsonIgnore]
         public List<string> RemainingParagraphs => Paragraphs.GetRange(1, Paragraphs.Count - 1);
 
         public string Image { get; set; }

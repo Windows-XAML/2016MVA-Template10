@@ -10,69 +10,80 @@ using Template10.Mvvm;
 using Template10.Services.NavigationService;
 using Windows.UI.Xaml.Navigation;
 using NewsService;
+using NewsClient.Services.DataService;
 
 namespace NewsClient.ViewModels
 {
     public class ArticlePageViewModel : ViewModelBase
     {
-        private Article _currentArticle;
         public ArticlePageViewModel()
         {
             if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
             {
-                Article = new NewsService.Article
-                {
-                    Headline = "Article headline",
-                    Paragraphs = new[]
-                    {
-                        "The quick brown fox jumps over the lazy dog.",
-                        "Now is the time for all good men to come the aid of their country.",
-                    }.ToList()
-                };
+                Article = Services.DataService.DataService.Sample();
             }
         }
 
         private Article _article;
+        private DataService _dataService;
+
         public Article Article { get { return _article; } set { Set(ref _article, value); } }
 
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> suspensionState)
         {
-            if (parameter == null)
+            _dataService = new Services.DataService.DataService();
+
+            if (parameter is int)
             {
-                HandleMissingArticle();
-                return;
+                var articleId = (int)parameter;
+                Article = await _dataService.GetArticleAsync(articleId);
             }
 
-            if (!(parameter is int))
-            {
-                HandleMissingArticle();
-                return;
-            }
-
-            var articleId = (int)parameter;
-
-            List<Article> originalItems;
-            if (SessionState.ContainsKey(nameof(NewsService.NewsService)))
-            {
-                originalItems = SessionState.Get<List<Article>>(nameof(NewsService.NewsService));
-            }
-            else
-            {
-                originalItems = await new NewsService.NewsService().GetCachedArticlesAsync();
-                SessionState.Add(nameof(NewsService.NewsService), originalItems);
-            }
-            Article = originalItems.SingleOrDefault(a => a.Id == articleId);
             if (Article == null)
             {
                 HandleMissingArticle();
+            }
+            else
+            {
+                UpdateIsFavorite();
             }
         }
 
         private async void HandleMissingArticle()
         {
-            await new ContentDialog { Title = "News App", Content = "Article is missing", PrimaryButtonText = "Ok" }.ShowAsync();
+            await new ContentDialog
+            {
+                Title = "News App",
+                Content = "Article is missing",
+                PrimaryButtonText = "Ok"
+            }.ShowAsync();
             NavigationService.GoBack();
         }
+
+        #region Favorites
+
+        public async void UpdateIsFavorite()
+        {
+            var favorites = await _dataService.GetFavoritesAsync();
+            IsFavorite = favorites.Any(x => x.Id.Equals(Article?.Id));
+            RaisePropertyChanged(nameof(IsFavorite));
+        }
+
+        public bool IsFavorite { get; set; }
+
+        public async void AddToFavorites()
+        {
+            await _dataService.AddToFavoritesAsync(Article);
+            UpdateIsFavorite();
+        }
+
+        public async void RemoveFromFavorites()
+        {
+            await _dataService.RemoveFromFavoritesAsync(Article);
+            UpdateIsFavorite();
+        }
+
+        #endregion
     }
 }
 

@@ -8,7 +8,8 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="using:NewsClient.Views"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:vm="using:NewsClient.ViewModels" x:Name="ThisPage" mc:Ignorable="d">
+      xmlns:vm="using:NewsClient.ViewModels" x:Name="ThisPage"
+      mc:Ignorable="d">
 
     <Page.DataContext>
         <vm:ArticlePageViewModel x:Name="ViewModel" />
@@ -55,17 +56,20 @@
             <Interactivity:Interaction.Behaviors>
                 <Behaviors:EllipsisBehavior Visibility="Auto" />
             </Interactivity:Interaction.Behaviors>
+            <AppBarButton Click="{x:Bind ViewModel.AddToFavorites}" Foreground="White"
+                          Icon="Favorite"
+                          Visibility="{Binding IsFavorite, Converter={StaticResource CollapsedWhenTrueConverter}}" />
+            <AppBarButton Click="{x:Bind ViewModel.RemoveFromFavorites}"
+                          Foreground="White" Icon="UnFavorite"
+                          Visibility="{Binding IsFavorite, Converter={StaticResource VisibleWhenTrueConverter}}" />
         </controls:PageHeader>
 
         <!--  content  -->
         <Grid Grid.Row="1">
             <ScrollViewer Padding="12,8,0,0" VerticalScrollBarVisibility="Auto">
                 <StackPanel Margin="12,0,24,0">
-                    <TextBlock Text="{x:Bind ViewModel.Article.FirstParagraph, Mode=OneWay}"
-                               Style="{StaticResource SubtitleTextBlockStyle}"
-                               Margin="0,0,0,8"/>
-                    <Image Source="{Binding Article.Image}"
-                           Stretch="UniformToFill" />
+                    <TextBlock Margin="0,0,0,8" Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Bind ViewModel.Article.FirstParagraph, Mode=OneWay}" />
+                    <Image Source="{Binding Article.Image}" Stretch="UniformToFill" />
                     <ItemsControl ItemsSource="{Binding Article.RemainingParagraphs}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -74,9 +78,7 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding}"
-                                           Style="{StaticResource BodyTextBlockStyle}" 
-                                           Margin="0,8,0,0"/>
+                                <TextBlock Margin="0,8,0,0" Style="{StaticResource BodyTextBlockStyle}" Text="{Binding}" />
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>

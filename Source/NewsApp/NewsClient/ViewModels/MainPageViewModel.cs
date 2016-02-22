@@ -15,30 +15,16 @@ namespace NewsClient.ViewModels
 {
     public class MainPageViewModel : ViewModelBase
     {
-        NewsService.NewsService _NewsService;
-
         public MainPageViewModel()
         {
             if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
             {
-                for (int i = 0; i < 10; i++)
-                {
-                    Items.Add(new NewsService.Article
-                    {
-                        Headline = "Article headline",
-                        Paragraphs = new[]
-                        {
-                            "The quick brown fox jumps over the lazy dog.",
-                            "Now is the time for all good men to come the aid of their country.",
-                        }.ToList()
-                    });
-                }
-            }
-            else
-            {
-                _NewsService = new NewsService.NewsService();
+                Enumerable.Range(1, 10).ForEach(x =>
+                    Items.Add(Services.DataService.DataService.Sample(x)));
             }
         }
+
+        #region properties
 
         private List<NewsService.Article> _originalItems;
 
@@ -58,6 +44,8 @@ namespace NewsClient.ViewModels
         string _FilterString = string.Empty;
         public string FilterString { get { return _FilterString; } set { Set(ref _FilterString, value); } }
 
+        #endregion
+
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> suspensionState)
         {
             // restore filter string, if any
@@ -67,15 +55,8 @@ namespace NewsClient.ViewModels
             }
 
             // load articles
-            if (SessionState.ContainsKey(nameof(NewsService.NewsService)))
-            {
-                _originalItems = SessionState.Get<List<Article>>(nameof(NewsService.NewsService));
-            }
-            else
-            {
-                _originalItems = await _NewsService.GetCachedArticlesAsync();
-                SessionState.Add(nameof(NewsService.NewsService), _originalItems);
-            }
+            var dataService = new Services.DataService.DataService();
+            _originalItems = await dataService.GetArticlesAsync();
 
             // apply initial filter
             Filter();
