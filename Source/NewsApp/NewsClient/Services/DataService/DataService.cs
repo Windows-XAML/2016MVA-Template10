@@ -27,7 +27,7 @@ namespace NewsClient.Services.DataService
         public async Task<List<Article>> GetArticlesAsync()
         {
             if (_articles == null)
-                _articles = await _newsService.GetArticlesAsync();
+                _articles = await _newsService.GetCachedArticlesAsync();
             if (_articles == null)
                 _articles = new List<Article>();
             return _articles;
