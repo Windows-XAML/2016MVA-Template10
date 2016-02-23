@@ -25,6 +25,9 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <!--  TODO: change properties for narrow view  -->
+                        <Setter Target="ColumnImage.Width" Value="150" />
+                        <Setter Target="FirstParagraph.FontSize" Value="18" />
+
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="VisualStateNormal">
@@ -75,7 +78,7 @@
                     <RelativePanel.AlignTopWithPanel>True</RelativePanel.AlignTopWithPanel>
                     <RelativePanel.AlignLeftWithPanel>True</RelativePanel.AlignLeftWithPanel>
                     <RelativePanel.LeftOf>ColumnImage</RelativePanel.LeftOf>
-                    <Paragraph FontSize="20">
+                    <Paragraph x:Name="FirstParagraph" FontSize="20">
                         <Run Text="{x:Bind ViewModel.Article.FirstParagraph, Mode=OneWay}" />
                         <InlineUIContainer>
                             <ItemsControl ItemsSource="{Binding Article.RemainingParagraphs}">
@@ -95,7 +98,7 @@
                     </Paragraph>
                 </RichTextBlock>
                 <Image x:Name="ColumnImage" Width="275"
-                       Height="150" Margin="12,0,0,0"
+                       Height="150" Margin="0,0,2,0"
                        Source="{Binding Article.Image}" Stretch="UniformToFill">
                     <RelativePanel.AlignTopWithPanel>True</RelativePanel.AlignTopWithPanel>
                     <RelativePanel.AlignRightWithPanel>True</RelativePanel.AlignRightWithPanel>
