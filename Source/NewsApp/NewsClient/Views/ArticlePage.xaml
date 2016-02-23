@@ -33,6 +33,7 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <!--  TODO: change properties for normal view  -->
+                        <Setter Target="ColumnImage.Width" Value="325" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="VisualStateWide">
@@ -41,6 +42,7 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <!--  TODO: change properties for wide view  -->
+                        <Setter Target="ColumnImage.Width" Value="550" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -67,13 +69,11 @@
         <!--  content  -->
         <ScrollViewer Grid.Row="1" Padding="12,8,0,0" VerticalScrollBarVisibility="Auto">
             <RelativePanel Margin="12,0,24,24">
-                <RichTextBlock x:Name="Column1"
-                               MinHeight="{Binding ActualHeight, ElementName=ColumnImage}"
-                               MaxLines="9" OverflowContentTarget="{x:Bind Column2}">
+                <RichTextBlock x:Name="Column1" Height="190" OverflowContentTarget="{x:Bind Column2}">
                     <RelativePanel.AlignTopWithPanel>True</RelativePanel.AlignTopWithPanel>
                     <RelativePanel.AlignLeftWithPanel>True</RelativePanel.AlignLeftWithPanel>
                     <RelativePanel.LeftOf>ColumnImage</RelativePanel.LeftOf>
-                    <Paragraph FontSize="18">
+                    <Paragraph FontSize="20">
                         <Run Text="{x:Bind ViewModel.Article.FirstParagraph, Mode=OneWay}" />
                         <InlineUIContainer>
                             <ItemsControl ItemsSource="{Binding Article.RemainingParagraphs}">
@@ -84,16 +84,17 @@
                                 </ItemsControl.ItemsPanel>
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <TextBlock FontSize="16" Margin="0,8,0,0" Style="{StaticResource BodyTextBlockStyle}" Text="{Binding}" />
+                                        <TextBlock Margin="0,8,0,0" FontSize="16"
+                                                   Text="{Binding}" TextWrapping="Wrap" />
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
                         </InlineUIContainer>
                     </Paragraph>
                 </RichTextBlock>
-                <Image x:Name="ColumnImage" Width="300" Margin="12,0,0,0"
-                       MinHeight="150" Source="{Binding Article.Image}"
-                       Stretch="UniformToFill">
+                <Image x:Name="ColumnImage" Width="275"
+                       Height="150" Margin="12,0,0,0"
+                       Source="{Binding Article.Image}" Stretch="UniformToFill">
                     <RelativePanel.AlignTopWithPanel>True</RelativePanel.AlignTopWithPanel>
                     <RelativePanel.AlignRightWithPanel>True</RelativePanel.AlignRightWithPanel>
                 </Image>
