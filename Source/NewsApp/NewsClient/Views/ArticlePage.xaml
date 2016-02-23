@@ -65,27 +65,43 @@
         </controls:PageHeader>
 
         <!--  content  -->
-        <Grid Grid.Row="1">
-            <ScrollViewer Padding="12,8,0,0" VerticalScrollBarVisibility="Auto">
-                <StackPanel Margin="12,0,24,0">
-                    <TextBlock Margin="0,0,0,8" Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Bind ViewModel.Article.FirstParagraph, Mode=OneWay}" />
-                    <Image Source="{Binding Article.Image}" Stretch="UniformToFill" />
-                    <ItemsControl ItemsSource="{Binding Article.RemainingParagraphs}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <ItemsStackPanel />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Margin="0,8,0,0" Style="{StaticResource BodyTextBlockStyle}" Text="{Binding}" />
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-
-                </StackPanel>
-            </ScrollViewer>
-        </Grid>
+        <ScrollViewer Grid.Row="1" Padding="12,8,0,0" VerticalScrollBarVisibility="Auto">
+            <RelativePanel Margin="12,0,24,24">
+                <RichTextBlock x:Name="Column1"
+                               MinHeight="{Binding ActualHeight, ElementName=ColumnImage}"
+                               MaxLines="9" OverflowContentTarget="{x:Bind Column2}">
+                    <RelativePanel.AlignTopWithPanel>True</RelativePanel.AlignTopWithPanel>
+                    <RelativePanel.AlignLeftWithPanel>True</RelativePanel.AlignLeftWithPanel>
+                    <RelativePanel.LeftOf>ColumnImage</RelativePanel.LeftOf>
+                    <Paragraph FontSize="18">
+                        <Run Text="{x:Bind ViewModel.Article.FirstParagraph, Mode=OneWay}" />
+                        <InlineUIContainer>
+                            <ItemsControl ItemsSource="{Binding Article.RemainingParagraphs}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <ItemsStackPanel />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock FontSize="16" Margin="0,8,0,0" Style="{StaticResource BodyTextBlockStyle}" Text="{Binding}" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </InlineUIContainer>
+                    </Paragraph>
+                </RichTextBlock>
+                <Image x:Name="ColumnImage" Width="300" Margin="12,0,0,0"
+                       MinHeight="150" Source="{Binding Article.Image}"
+                       Stretch="UniformToFill">
+                    <RelativePanel.AlignTopWithPanel>True</RelativePanel.AlignTopWithPanel>
+                    <RelativePanel.AlignRightWithPanel>True</RelativePanel.AlignRightWithPanel>
+                </Image>
+                <RichTextBlockOverflow x:Name="Column2" Grid.Column="1" Margin="0,0,0,0">
+                    <RelativePanel.Below>Column1</RelativePanel.Below>
+                </RichTextBlockOverflow>
+            </RelativePanel>
+        </ScrollViewer>
 
     </Grid>
 </Page>
