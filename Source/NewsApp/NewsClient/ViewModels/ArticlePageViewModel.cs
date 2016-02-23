@@ -16,23 +16,29 @@ namespace NewsClient.ViewModels
 {
     public class ArticlePageViewModel : ViewModelBase
     {
+        private DataService _dataService;
+
         public ArticlePageViewModel()
         {
             if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
             {
-                Article = Services.DataService.DataService.Sample();
+                Article = DataService.Sample();
+            }
+            else
+            {
+                _dataService = new DataService();
             }
         }
 
-        private Article _article;
-        private DataService _dataService;
+        #region properties
 
+        private Article _article;
         public Article Article { get { return _article; } set { Set(ref _article, value); } }
+
+        #endregion
 
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> suspensionState)
         {
-            _dataService = new Services.DataService.DataService();
-
             if (parameter is int)
             {
                 var articleId = (int)parameter;

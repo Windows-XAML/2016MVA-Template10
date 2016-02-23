@@ -57,7 +57,16 @@ namespace NewsClient
         public override async Task OnStartAsync(StartKind startKind, IActivatedEventArgs args)
         {
             await Task.Delay(3500);
-            NavigationService.Navigate(typeof(Views.MainPage));
+
+            var param = string.Empty;
+            var protocolArgs = args as ProtocolActivatedEventArgs;
+            if (protocolArgs != null)
+            {
+                var uri = protocolArgs.Uri;
+                var decoder = new Windows.Foundation.WwwFormUrlDecoder(uri.Query);
+                param = decoder.GetFirstValueByName("filter");
+            }
+            NavigationService.Navigate(typeof(Views.MainPage), param);
         }
     }
 }

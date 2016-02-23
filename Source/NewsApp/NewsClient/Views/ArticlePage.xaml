@@ -58,12 +58,14 @@
             <Interactivity:Interaction.Behaviors>
                 <Behaviors:EllipsisBehavior Visibility="Auto" />
             </Interactivity:Interaction.Behaviors>
-            <AppBarButton Click="{x:Bind ViewModel.AddToFavorites}" Foreground="White"
+
+            <!--<AppBarButton Click="{x:Bind ViewModel.AddToFavorites}" Foreground="White"
                           Icon="Favorite"
                           Visibility="{Binding IsFavorite, Converter={StaticResource CollapsedWhenTrueConverter}}" />
             <AppBarButton Click="{x:Bind ViewModel.RemoveFromFavorites}"
                           Foreground="White" Icon="UnFavorite"
-                          Visibility="{Binding IsFavorite, Converter={StaticResource VisibleWhenTrueConverter}}" />
+                          Visibility="{Binding IsFavorite, Converter={StaticResource VisibleWhenTrueConverter}}" />-->
+
         </controls:PageHeader>
 
         <!--  content  -->

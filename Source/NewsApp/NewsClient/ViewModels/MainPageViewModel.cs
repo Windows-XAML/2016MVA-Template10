@@ -10,17 +10,23 @@ using Windows.Storage;
 using NewsService;
 using Newtonsoft.Json;
 using Template10.Utils;
+using NewsClient.Services.DataService;
 
 namespace NewsClient.ViewModels
 {
     public class MainPageViewModel : ViewModelBase
     {
+        private DataService _dataService;
+
         public MainPageViewModel()
         {
             if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
             {
-                Enumerable.Range(1, 10).ForEach(x =>
-                    Items.Add(Services.DataService.DataService.Sample(x)));
+                Enumerable.Range(1, 10).ForEach(x => Items.Add(DataService.Sample(x)));
+            }
+            else
+            {
+                _dataService = new DataService();
             }
         }
 
@@ -48,15 +54,18 @@ namespace NewsClient.ViewModels
 
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> suspensionState)
         {
+            // load articles
+            _originalItems = await _dataService.GetArticlesAsync();
+
             // restore filter string, if any
             if (suspensionState.ContainsKey(nameof(FilterString)))
             {
                 FilterString = suspensionState[nameof(FilterString)]?.ToString();
             }
-
-            // load articles
-            var dataService = new Services.DataService.DataService();
-            _originalItems = await dataService.GetArticlesAsync();
+            else if (parameter as string != null)
+            {
+                FilterString = parameter?.ToString();
+            }
 
             // apply initial filter
             Filter();

@@ -33,21 +33,26 @@ namespace NewsClient.Views
 
         private async void RenderFavorites(List<NewsService.Article> list)
         {
-            var existing = MyHamburgerMenu.PrimaryButtons.Where(x => Equals("Favorite", (x.Content as StackPanel).Tag));
-            foreach (var item in existing.ToArray())
-            {
-                MyHamburgerMenu.PrimaryButtons.Remove(item);
-            }
-            var favorites = list ?? await _dataService.GetFavoritesAsync();
-            foreach (var item in favorites)
-            {
-                MyHamburgerMenu.PrimaryButtons.Add(MakeButton(item));
-            }
+            //var existing = MyHamburgerMenu.PrimaryButtons.Where(x => Equals("Favorite", (x.Content as StackPanel).Tag));
+            //foreach (var item in existing.ToArray())
+            //{
+            //    MyHamburgerMenu.PrimaryButtons.Remove(item);
+            //}
+            //var favorites = list ?? await _dataService.GetFavoritesAsync();
+            //foreach (var item in favorites)
+            //{
+            //    MyHamburgerMenu.PrimaryButtons.Add(MakeButton(item));
+            //}
         }
 
         private HamburgerButtonInfo MakeButton(NewsService.Article article)
         {
-            var symbol = new SymbolIcon { Height = 48, Width = 48, Symbol = Symbol.Favorite };
+            var symbol = new SymbolIcon
+            {
+                Height = 48,
+                Width = 48,
+                Symbol = Symbol.Favorite
+            };
             var block = new TextBlock
             {
                 VerticalAlignment = VerticalAlignment.Center,
@@ -63,9 +68,12 @@ namespace NewsClient.Views
             stack.Children.Add(block);
             var button = new HamburgerButtonInfo
             {
-                PageType = typeof(Views.ArticlePage),
-                PageParameter = article.Id,
+                ButtonType = HamburgerButtonInfo.ButtonTypes.Command,
                 Content = stack,
+            };
+            button.Tapped += (s, e) =>
+            {
+                MyHamburgerMenu.NavigationService.Navigate(typeof(Views.ArticlePage), article.Id);
             };
             return button;
         }
