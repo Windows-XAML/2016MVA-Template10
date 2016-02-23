@@ -60,14 +60,15 @@
         <controls:PageHeader Frame="{x:Bind Frame}" Text="{x:Bind ViewModel.Article.Headline, Mode=OneWay}">
             <Interactivity:Interaction.Behaviors>
                 <Behaviors:EllipsisBehavior Visibility="Auto" />
+                <Behaviors:DeviceDispositionBehavior Continuum="True" Desktop="True" IoT="True" />
             </Interactivity:Interaction.Behaviors>
 
-            <!--<AppBarButton Click="{x:Bind ViewModel.AddToFavorites}" Foreground="White"
+            <AppBarButton Click="{x:Bind ViewModel.AddToFavorites}" Foreground="White"
                           Icon="Favorite"
                           Visibility="{Binding IsFavorite, Converter={StaticResource CollapsedWhenTrueConverter}}" />
             <AppBarButton Click="{x:Bind ViewModel.RemoveFromFavorites}"
                           Foreground="White" Icon="UnFavorite"
-                          Visibility="{Binding IsFavorite, Converter={StaticResource VisibleWhenTrueConverter}}" />-->
+                          Visibility="{Binding IsFavorite, Converter={StaticResource VisibleWhenTrueConverter}}" />
 
         </controls:PageHeader>
 
