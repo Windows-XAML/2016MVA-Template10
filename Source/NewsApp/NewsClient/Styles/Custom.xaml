@@ -7,6 +7,7 @@
     <Color x:Key="SystemAccentColor">OrangeRed</Color>
     <Color x:Key="ContrastColor">White</Color>
 
+
     <ResourceDictionary.ThemeDictionaries>
 
 
