@@ -80,13 +80,6 @@
             <RelativePanel.AlignTopWithPanel>True</RelativePanel.AlignTopWithPanel>
             <RelativePanel.AlignRightWithPanel>True</RelativePanel.AlignRightWithPanel>
             <RelativePanel.AlignLeftWithPanel>True</RelativePanel.AlignLeftWithPanel>
-            <AppBarButton Icon="Delete" Label="Delete">
-                <Button.Flyout>
-                    <Flyout Placement="Bottom">
-                        
-                    </Flyout>
-                </Button.Flyout>
-            </AppBarButton>
             <!--  secondary commands  -->
             <controls:PageHeader.SecondaryCommands>
                 <AppBarButton Click="{x:Bind ViewModel.GotoSettings}" Label="Settings" />
