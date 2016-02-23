@@ -12,6 +12,7 @@ namespace NewsClient.Views
         {
             InitializeComponent();
             Window.Current.SizeChanged += (s, e) => Resize(splashScreen);
+            RingStoryboard.Begin();
             Resize(splashScreen);
         }
 
@@ -31,7 +32,11 @@ namespace NewsClient.Views
             MyImage.Width = splashScreen.ImageLocation.Width;
             MyImage.SetValue(Canvas.TopProperty, splashScreen.ImageLocation.Top);
             MyImage.SetValue(Canvas.LeftProperty, splashScreen.ImageLocation.Left);
-            ProgressTransform.TranslateY = MyImage.Height / 2;
+        }
+
+        private void DoubleAnimationUsingKeyFrames_Completed(object sender, object e)
+        {
+
         }
     }
 }

@@ -14,8 +14,8 @@
 
             <SolidColorBrush x:Key="SystemAccentColorBrush" Color="{ThemeResource SystemAccentColor}" />
             <SolidColorBrush x:Key="ContrastColorBrush" Color="{ThemeResource ContrastColor}" />
-            <SolidColorBrush x:Key="ExtendedSplashBackground" Color="{ThemeResource ContrastColor}" />
-            <SolidColorBrush x:Key="ExtendedSplashForeground" Color="{ThemeResource SystemAccentColor}" />
+            <SolidColorBrush x:Key="ExtendedSplashBackground" Color="{ThemeResource SystemAccentColor}" />
+            <SolidColorBrush x:Key="ExtendedSplashForeground" Color="{ThemeResource ContrastColor}" />
 
             <Style TargetType="controls:HamburgerMenu">
                 <Setter Property="VisualStateNarrowMinWidth" Value="{ThemeResource NarrowMinWidth}" />
@@ -42,8 +42,8 @@
 
             <SolidColorBrush x:Key="SystemAccentColorBrush" Color="{ThemeResource SystemAccentColor}" />
             <SolidColorBrush x:Key="ContrastColorBrush" Color="{ThemeResource ContrastColor}" />
-            <SolidColorBrush x:Key="ExtendedSplashBackground" Color="{ThemeResource ContrastColor}" />
-            <SolidColorBrush x:Key="ExtendedSplashForeground" Color="{ThemeResource SystemAccentColor}" />
+            <SolidColorBrush x:Key="ExtendedSplashBackground" Color="{ThemeResource SystemAccentColor}" />
+            <SolidColorBrush x:Key="ExtendedSplashForeground" Color="{ThemeResource ContrastColor}" />
 
             <Style TargetType="controls:HamburgerMenu">
                 <Setter Property="AccentColor" Value="{ThemeResource SystemAccentColor}" />

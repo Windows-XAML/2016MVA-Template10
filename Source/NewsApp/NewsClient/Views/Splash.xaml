@@ -10,6 +10,19 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d">
 
+    <UserControl.Resources>
+        <Storyboard x:Name="RingStoryboard">
+            <DoubleAnimationUsingKeyFrames Completed="DoubleAnimationUsingKeyFrames_Completed"
+                                           EnableDependentAnimation="True"
+                                           Storyboard.TargetName="MyRingSlice"
+                                           Storyboard.TargetProperty="(RingSegment.EndAngle)">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0" />
+                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="55" />
+                <EasingDoubleKeyFrame KeyTime="0:0:3" Value="359.9999" />
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </UserControl.Resources>
+
     <Grid Background="{StaticResource ExtendedSplashBackground}">
 
         <Canvas x:Name="MyCanvas" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
@@ -23,23 +36,13 @@
             <Viewbox x:Name="MyImage" Width="{Binding ActualWidth, ElementName=MyCanvas, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=MyCanvas, Mode=OneWay}">
                 <Grid>
                     <Image Source="ms-appx:///Assets/SplashScreen.png" />
-                    <Controls:RingSlice x:Name="MyRingSlice" HorizontalAlignment="Center"
-                                        VerticalAlignment="Center" EndAngle="200"
-                                        Fill="Red" InnerRadius="80"
-                                        Radius="100" />
+                    <Controls:RingSegment x:Name="MyRingSlice" HorizontalAlignment="Center"
+                                          VerticalAlignment="Center" EndAngle="200"
+                                          Fill="{StaticResource ExtendedSplashForeground}"
+                                          InnerRadius="90" Radius="100" />
                 </Grid>
             </Viewbox>
         </Canvas>
-
-        <ProgressRing x:Name="progressRing" Width="50"
-                      Height="50" HorizontalAlignment="Center"
-                      VerticalAlignment="Center"
-                      Foreground="{StaticResource ExtendedSplashForeground}"
-                      IsActive="True" RenderTransformOrigin="0.5,0.5">
-            <ProgressRing.RenderTransform>
-                <CompositeTransform x:Name="ProgressTransform" TranslateY="120" />
-            </ProgressRing.RenderTransform>
-        </ProgressRing>
 
     </Grid>
 

@@ -10,7 +10,7 @@ using Windows.UI.Xaml.Shapes;
 
 namespace NewsClient.Controls
 {
-    public class RingSlice : Path
+    public class RingSegment : Path
     {
         private bool _isUpdating;
 
@@ -22,7 +22,7 @@ namespace NewsClient.Controls
             DependencyProperty.Register(
                 "StartAngle",
                 typeof(double),
-                typeof(RingSlice),
+                typeof(RingSegment),
                 new PropertyMetadata(
                     0d,
                     OnStartAngleChanged));
@@ -41,7 +41,7 @@ namespace NewsClient.Controls
 
         private static void OnStartAngleChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            var target = (RingSlice)sender;
+            var target = (RingSegment)sender;
             var oldStartAngle = (double)e.OldValue;
             var newStartAngle = (double)e.NewValue;
             target.OnStartAngleChanged(oldStartAngle, newStartAngle);
@@ -61,7 +61,7 @@ namespace NewsClient.Controls
             DependencyProperty.Register(
                 "EndAngle",
                 typeof(double),
-                typeof(RingSlice),
+                typeof(RingSegment),
                 new PropertyMetadata(
                     0d,
                     OnEndAngleChanged));
@@ -80,7 +80,7 @@ namespace NewsClient.Controls
 
         private static void OnEndAngleChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            var target = (RingSlice)sender;
+            var target = (RingSegment)sender;
             var oldEndAngle = (double)e.OldValue;
             var newEndAngle = (double)e.NewValue;
             target.OnEndAngleChanged(oldEndAngle, newEndAngle);
@@ -100,7 +100,7 @@ namespace NewsClient.Controls
             DependencyProperty.Register(
                 "Radius",
                 typeof(double),
-                typeof(RingSlice),
+                typeof(RingSegment),
                 new PropertyMetadata(
                     0d,
                     OnRadiusChanged));
@@ -119,7 +119,7 @@ namespace NewsClient.Controls
 
         private static void OnRadiusChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            var target = (RingSlice)sender;
+            var target = (RingSegment)sender;
             var oldRadius = (double)e.OldValue;
             var newRadius = (double)e.NewValue;
             target.OnRadiusChanged(oldRadius, newRadius);
@@ -140,7 +140,7 @@ namespace NewsClient.Controls
             DependencyProperty.Register(
                 "InnerRadius",
                 typeof(double),
-                typeof(RingSlice),
+                typeof(RingSegment),
                 new PropertyMetadata(
                     0d,
                     OnInnerRadiusChanged));
@@ -159,7 +159,7 @@ namespace NewsClient.Controls
 
         private static void OnInnerRadiusChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            var target = (RingSlice)sender;
+            var target = (RingSegment)sender;
             var oldInnerRadius = (double)e.OldValue;
             var newInnerRadius = (double)e.NewValue;
             target.OnInnerRadiusChanged(oldInnerRadius, newInnerRadius);
@@ -184,7 +184,7 @@ namespace NewsClient.Controls
             DependencyProperty.Register(
                 "Center",
                 typeof(Point?),
-                typeof(RingSlice),
+                typeof(RingSegment),
                 new PropertyMetadata(null, OnCenterChanged));
 
         /// <summary>
@@ -212,7 +212,7 @@ namespace NewsClient.Controls
         private static void OnCenterChanged(
             DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var target = (RingSlice)d;
+            var target = (RingSegment)d;
             Point? oldCenter = (Point?)e.OldValue;
             Point? newCenter = target.Center;
             target.OnCenterChanged(oldCenter, newCenter);
@@ -232,9 +232,9 @@ namespace NewsClient.Controls
         #endregion
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RingSlice" /> class.
+        /// Initializes a new instance of the <see cref="RingSegment" /> class.
         /// </summary>
-        public RingSlice()
+        public RingSegment()
         {
             this.SizeChanged += OnSizeChanged;
         }
